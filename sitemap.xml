@@ -3,19 +3,60 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://rudeigerc.github.io/about/</loc>
-    <lastmod>2019-05-23T00:24:22+08:00</lastmod>
+    <loc>https://rudeigerc.github.io/posts/cloud_native_infrastructure_monitoring/</loc>
+    <lastmod>2019-05-27T22:44:05+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://rudeigerc.github.io/</loc>
-    <lastmod>2019-05-23T00:24:22+08:00</lastmod>
+    <lastmod>2019-05-27T22:44:05+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://rudeigerc.github.io/posts/</loc>
+    <lastmod>2019-05-27T22:44:05+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://rudeigerc.github.io/tags/</loc>
+    <lastmod>2019-05-27T22:44:05+08:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://rudeigerc.github.io/tags/cloud-native/</loc>
+    <lastmod>2019-05-27T22:44:05+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://rudeigerc.github.io/tags/microservices/</loc>
+    <lastmod>2019-05-27T22:44:05+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://rudeigerc.github.io/tags/monitoring/</loc>
+    <lastmod>2019-05-27T22:44:05+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://rudeigerc.github.io/posts/cloud_native_infrastructure_service_discovery/</loc>
+    <lastmod>2019-05-27T22:23:43+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://rudeigerc.github.io/tags/service-discovery/</loc>
+    <lastmod>2019-05-27T22:23:43+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://rudeigerc.github.io/about/</loc>
+    <lastmod>2019-05-23T00:24:22+08:00</lastmod>
   </url>
   
 </urlset>

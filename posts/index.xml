@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Luthadel</title>
-    <link>https://rudeigerc.github.io/</link>
-    <description>Recent content on Luthadel</description>
+    <title>Posts on Luthadel</title>
+    <link>https://rudeigerc.github.io/posts/</link>
+    <description>Recent content in Posts on Luthadel</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-Hans</language>
     <lastBuildDate>Mon, 27 May 2019 22:44:05 +0800</lastBuildDate>
     
-	<atom:link href="https://rudeigerc.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://rudeigerc.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -32,15 +32,6 @@ According to the documentation, it&amp;rsquo;s not recommended to deploy it as a
       <guid>https://rudeigerc.github.io/posts/cloud_native_infrastructure_service_discovery/</guid>
       <description>Introduction Service discovery components maintain a list of service instances that are available for work within a microservice domain, which is the most important part in microservice architecture. The advantage of service discovery components is that clients do not need to know the exact position of services, what they have are just the registered name of services if they want to call or use them.
 Usually, a microservice will register itself to the center of service discovery components when it was started successfully, including necessary parameters such as the unique name of service, IP address and the port bind.</description>
-    </item>
-    
-    <item>
-      <title>About</title>
-      <link>https://rudeigerc.github.io/about/</link>
-      <pubDate>Thu, 23 May 2019 00:24:22 +0800</pubDate>
-      
-      <guid>https://rudeigerc.github.io/about/</guid>
-      <description> Yuchen Cheng Education Shanghai Jiao Tong University  Bachelor of Engineering, Software Engineering Shanghai, China Sep. 2015 - Jun. 2019  Miscellaneous  Email: rudeigerc@gmail.com Blog: https://rudeigerc.github.io LinkedIn: https://www.linkedin.com/in/rudeigerc/  </description>
     </item>
     
   </channel>
