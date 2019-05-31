@@ -4,22 +4,14 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Cloud Native Infrastructure: Part 2 Monitoring - Luthadel</title><meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta property="og:title" content="Cloud Native Infrastructure: Part 2 Monitoring" />
-<meta property="og:description" content="Introduction Prometheus Prometheus is an open-source systems monitoring and alerting toolkit.
-Installation In docker-compose.yml:
-services: prometheus: image: prom/prometheus restart: always volumes: - ./prometheus.yml:/etc/prometheus/prometheus.yml - ./prometheus:/prometheus ports: - 9090:9090 user: root Prometheus provides a UI at :9090 by default.
-Node Exporter Node Exporter is designed ad a Prometheus exporter for hardware and OS metrics exposed by *NIX kernels.
-According to the documentation, it&rsquo;s not recommended to deploy it as a Docker container because it requires access to the host system, so you could just download the binary release version." />
+<meta property="og:description" content="Monitoring." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://rudeigerc.github.io/posts/cloud_native_infrastructure_monitoring/" />
 <meta property="article:published_time" content="2019-05-27T22:44:05&#43;08:00"/>
-<meta property="article:modified_time" content="2019-05-27T22:44:05&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-28T01:03:50&#43;08:00"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Cloud Native Infrastructure: Part 2 Monitoring"/>
-<meta name="twitter:description" content="Introduction Prometheus Prometheus is an open-source systems monitoring and alerting toolkit.
-Installation In docker-compose.yml:
-services: prometheus: image: prom/prometheus restart: always volumes: - ./prometheus.yml:/etc/prometheus/prometheus.yml - ./prometheus:/prometheus ports: - 9090:9090 user: root Prometheus provides a UI at :9090 by default.
-Node Exporter Node Exporter is designed ad a Prometheus exporter for hardware and OS metrics exposed by *NIX kernels.
-According to the documentation, it&rsquo;s not recommended to deploy it as a Docker container because it requires access to the host system, so you could just download the binary release version."/>
+<meta name="twitter:description" content="Monitoring."/>
 <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,300italic,400italic|Raleway:500,100,300" rel="stylesheet">
 
 	<link rel="stylesheet" type="text/css" media="screen" href="/css/normalize.css" />
@@ -30,8 +22,8 @@ According to the documentation, it&rsquo;s not recommended to deploy it as a Doc
 	<div class="container wrapper post">
 		<div class="header">
 	<h1 class="site-title">Luthadel</h1>
-	<div class="site-description"><h2>Yuchen Cheng&rsquo;s Homepage</h2><nav class="nav social">
-			<ul class="flat"><a href="https://github.com/rudeigerc" title="GitHub"><i data-feather="github"></i></a><a href="https://www.facebook.com/rudeigercheng" title="Facebook"><i data-feather="facebook"></i></a><a href="https://www.linkedin.com/in/rudeigerc/" title="LinkedIn"><i data-feather="linkedin"></i></a><a href="mailto:rudeigerc@gmail.com" title="Email"><i data-feather="mail"></i></a></ul>
+	<div class="site-description"><h2>Yuchen Cheng&rsquo;s Blog</h2><nav class="nav social">
+			<ul class="flat"><a href="https://github.com/rudeigerc" title="GitHub"><i data-feather="github"></i></a><a href="https://www.facebook.com/rudeigercheng" title="Facebook"><i data-feather="facebook"></i></a><a href="https://www.linkedin.com/in/rudeigerc/" title="LinkedIn"><i data-feather="linkedin"></i></a><a href="mailto:rudeigerc@gmail.com" title="Email"><i data-feather="mail"></i></a><a href="/index.xml" title="RSS"><i data-feather="rss"></i></a></ul>
 		</nav>
 	</div>
 
@@ -47,11 +39,11 @@ According to the documentation, it&rsquo;s not recommended to deploy it as a Doc
 			</li>
 			
 			<li>
-				<a href="/about">About</a>
+				<a href="/tags">Tags</a>
 			</li>
 			
 			<li>
-				<a href="/tags">Tags</a>
+				<a href="/about">About</a>
 			</li>
 			
 		</ul>

@@ -5,7 +5,8 @@
     <link>https://rudeigerc.github.io/</link>
     <description>Recent content on Luthadel</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-Hans</language>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2019 Yuchen Cheng</copyright>
     <lastBuildDate>Mon, 27 May 2019 22:44:05 +0800</lastBuildDate>
     
 	<atom:link href="https://rudeigerc.github.io/index.xml" rel="self" type="application/rss+xml" />
@@ -40,7 +41,8 @@ Usually, a microservice will register itself to the center of service discovery 
       <pubDate>Thu, 23 May 2019 00:24:22 +0800</pubDate>
       
       <guid>https://rudeigerc.github.io/about/</guid>
-      <description> Yuchen Cheng Education Shanghai Jiao Tong University  Bachelor of Engineering, Software Engineering Shanghai, China Sep. 2015 - Jun. 2019  Miscellaneous  Email: rudeigerc@gmail.com Blog: https://rudeigerc.github.io LinkedIn: https://www.linkedin.com/in/rudeigerc/  </description>
+      <description>Yuchen Cheng Software Engineer.
+Education Shanghai Jiao Tong University  Bachelor of Engineering in Software Engineering Shanghai, China Sep. 2015 - Jun. 2019  Teaching Assistant  SE232: Programming and Data Structures SE418: Software Product Design and User Experience SE26017: Software Innovation and R&amp;amp;D Management  Experience JD.com  iOS Developer Internship Module JingZao  Languages  Chinese English Japanese: Japanese-Language Proficiency Test N1  Miscellaneous  Email: rudeigerc@gmail.com Blog: https://rudeigerc.</description>
     </item>
     
   </channel>
