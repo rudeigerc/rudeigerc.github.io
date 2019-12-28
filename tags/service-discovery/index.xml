@@ -1,26 +1,2 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>service-discovery on Luthadel</title>
-    <link>https://rudeigerc.github.io/tags/service-discovery/</link>
-    <description>Recent content in service-discovery on Luthadel</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>&amp;copy; 2019 Yuchen Cheng</copyright>
-    <lastBuildDate>Mon, 27 May 2019 22:23:43 +0800</lastBuildDate>
-    
-	<atom:link href="https://rudeigerc.github.io/tags/service-discovery/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>Cloud Native Infrastructure: Part 1 Service Discovery</title>
-      <link>https://rudeigerc.github.io/posts/cloud_native_infrastructure_service_discovery/</link>
-      <pubDate>Mon, 27 May 2019 22:23:43 +0800</pubDate>
-      
-      <guid>https://rudeigerc.github.io/posts/cloud_native_infrastructure_service_discovery/</guid>
-      <description>Introduction Service discovery components maintain a list of service instances that are available for work within a microservice domain, which is the most important part in microservice architecture. The advantage of service discovery components is that clients do not need to know the exact position of services, what they have are just the registered name of services if they want to call or use them.
-Usually, a microservice will register itself to the center of service discovery components when it was started successfully, including necessary parameters such as the unique name of service, IP address and the port bind.</description>
-    </item>
-    
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>service-discovery on Luthadel</title><link>https://rudeigerc.github.io/tags/service-discovery/</link><description>Recent content in service-discovery on Luthadel</description><generator>Hugo -- gohugo.io</generator><language>zh-Hans</language><copyright>© 2019 Yuchen Cheng</copyright><lastBuildDate>Mon, 27 May 2019 22:23:43 +0800</lastBuildDate><atom:link href="https://rudeigerc.github.io/tags/service-discovery/index.xml" rel="self" type="application/rss+xml"/><item><title>Cloud Native Infrastructure: Part 1 Service Discovery</title><link>https://rudeigerc.github.io/posts/cloud_native_infrastructure_service_discovery/</link><pubDate>Mon, 27 May 2019 22:23:43 +0800</pubDate><guid>https://rudeigerc.github.io/posts/cloud_native_infrastructure_service_discovery/</guid><description>Introduction Service discovery components maintain a list of service instances that are available for work within a microservice domain, which is the most important part in microservice architecture. The advantage of service discovery components is that clients do not need to know the exact position of services, what they have are just the registered name of services if they want to call or use them.
+Usually, a microservice will register itself to the center of service discovery components when it was started successfully, including necessary parameters such as the unique name of service, IP address and the port bind.</description></item></channel></rss>
