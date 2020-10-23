@@ -1,42 +1,19 @@
-<!doctype html><html lang=zh-hans><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=author content="Yuchen Cheng"><meta property="og:title" content="Cloud Native Infrastructure: Part 2 Monitoring"><meta property="og:description" content="The post introduces the combination of Prometheus and Grafana."><meta property="og:type" content="article"><meta property="og:url" content="https://rudeigerc.dev/posts/cloud-native-infrastructure-monitoring/"><meta property="article:published_time" content="2019-05-27T22:44:05+08:00"><meta property="article:modified_time" content="2020-08-11T23:27:17+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Cloud Native Infrastructure: Part 2 Monitoring"><meta name=twitter:description content="The post introduces the combination of Prometheus and Grafana."><base href=https://rudeigerc.dev/posts/cloud-native-infrastructure-monitoring/><title>Cloud Native Infrastructure: Part 2 Monitoring | Luthadel</title><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css integrity=sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js integrity=sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4 crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js integrity=sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa crossorigin=anonymous onload=renderMathInElement(document.body);></script><link rel=stylesheet href=https://rudeigerc.dev/sass/main.min.f504894b11fa591d5f66db398ac3a211c48e12d3e727bcffea6edd83b422aece.css><script src=https://kit.fontawesome.com/ab13fc9725.js crossorigin=anonymous></script><link rel=icon href=/img/favicon.ico type=image/x-icon><link rel=shortcut href=/img/favicon.ico type=image/x-icon><link rel=apple-touch-icon href=/img/apple-touch-icon.png><link rel=mask-icon href=/img/icon.svg></head><body><div><h1 class=title>Luthadel</h1><h2 class=subtitle>Yuchen Cheng's Blog</h2><div class=social><div class=social-icon><a href=https://github.com/rudeigerc title=GitHub><i class="fab fa-github"></i></a></div><div class=social-icon><a href=https://twitter.com/yuchen_cheng title=Twitter><i class="fab fa-twitter"></i></a></div><div class=social-icon><a href=https://www.linkedin.com/in/rudeigerc/ title=LinkedIn><i class="fab fa-linkedin"></i></a></div><div class=social-icon><a href=mailto:rudeigerc@gmail.com title=E-mail><i class="fas fa-envelope"></i></a></div><div class=social-icon><a href=/index.xml title=RSS><i class="fas fa-rss"></i></a></div></div><div class=menu><div class=menu-item><a href=/>Home</a></div><div class=menu-item><a href=/posts>Posts</a></div><div class=menu-item><a href=/categories>Catagories</a></div><div class=menu-item><a href=/tags>Tags</a></div><div class=menu-item><a href=/about>About</a></div></div></div><div id=content><section id=main><h1 id=title>Cloud Native Infrastructure: Part 2 Monitoring</h1><div class="single date">2019-05-27</div><div class=tags><a href=/tags/cloud-native><div class=tag>#cloud-native</div></a><a href=/tags/microservices><div class=tag>#microservices</div></a><a href=/tags/monitoring><div class=tag>#monitoring</div></a></div><div><article id=content><h2 id=introduction>Introduction</h2><h2 id=prometheus>Prometheus</h2><p><a href=https://prometheus.io/>Prometheus</a> is an open-source systems monitoring and alerting toolkit.</p><h3 id=installation>Installation</h3><p>In <code>docker-compose.yml</code>:</p><div class=highlight><div style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
-</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#000;font-weight:700>services</span>:<span style=color:#bbb>
-</span><span style=color:#bbb>  </span><span style=color:#000;font-weight:700>prometheus</span>:<span style=color:#bbb>
-</span><span style=color:#bbb>    </span><span style=color:#000;font-weight:700>image</span>:<span style=color:#bbb> </span>prom/prometheus<span style=color:#bbb>
-</span><span style=color:#bbb>    </span><span style=color:#000;font-weight:700>restart</span>:<span style=color:#bbb> </span>always<span style=color:#bbb>
-</span><span style=color:#bbb>    </span><span style=color:#000;font-weight:700>volumes</span>:<span style=color:#bbb>
+<!doctype html><html lang=zh-hans><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=author content="Yuchen Cheng"><meta property="og:title" content="Cloud Native Infrastructure: Part 2 Monitoring"><meta property="og:description" content="The post introduces the combination of Prometheus and Grafana."><meta property="og:type" content="article"><meta property="og:url" content="https://rudeigerc.dev/posts/cloud-native-infrastructure-monitoring/"><meta property="article:published_time" content="2019-05-27T22:44:05+08:00"><meta property="article:modified_time" content="2020-10-24T01:17:22+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Cloud Native Infrastructure: Part 2 Monitoring"><meta name=twitter:description content="The post introduces the combination of Prometheus and Grafana."><base href=https://rudeigerc.dev/posts/cloud-native-infrastructure-monitoring/><title>Cloud Native Infrastructure: Part 2 Monitoring | Luthadel</title><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css integrity=sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js integrity=sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4 crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js integrity=sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa crossorigin=anonymous onload=renderMathInElement(document.body);></script><link rel=stylesheet href=https://rudeigerc.dev/sass/main.min.1516f38c6d061c5128cd164e35a236e8459f92efb6318e5a10bbe05a750ba3c7.css><link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500&family=Roboto:wght@300;400;500&display=swap" rel=stylesheet><script src=https://kit.fontawesome.com/ab13fc9725.js crossorigin=anonymous></script><link rel=icon href=/img/favicon.ico type=image/x-icon><link rel=shortcut href=/img/favicon.ico type=image/x-icon><link rel=apple-touch-icon href=/img/apple-touch-icon.png><link rel=mask-icon href=/img/icon.svg></head><body><div><h1 class=title>Luthadel</h1><h2 class=subtitle>Yuchen Cheng's Blog</h2><div class=social><div class=social-icon><a href=https://github.com/rudeigerc title=GitHub><i class="fab fa-github"></i></a></div><div class=social-icon><a href=https://twitter.com/yuchen_cheng title=Twitter><i class="fab fa-twitter"></i></a></div><div class=social-icon><a href=https://www.linkedin.com/in/rudeigerc/ title=LinkedIn><i class="fab fa-linkedin"></i></a></div><div class=social-icon><a href=mailto:rudeigerc@gmail.com title=E-mail><i class="fas fa-envelope"></i></a></div><div class=social-icon><a href=/index.xml title=RSS><i class="fas fa-rss"></i></a></div></div><div class=menu><div class=menu-item><a href=/>Home</a></div><div class=menu-item><a href=/posts>Posts</a></div><div class=menu-item><a href=/categories>Catagories</a></div><div class=menu-item><a href=/tags>Tags</a></div><div class=menu-item><a href=/about>About</a></div></div></div><div id=content><section id=main><h1 id=title>Cloud Native Infrastructure: Part 2 Monitoring</h1><div class="single date">2019-05-27</div><div class=tags><a href=/tags/cloud-native><div class=tag>#cloud-native</div></a><a href=/tags/microservices><div class=tag>#microservices</div></a><a href=/tags/monitoring><div class=tag>#monitoring</div></a></div><div><article id=content><h2 id=introduction>Introduction</h2><h2 id=prometheus>Prometheus</h2><p><a href=https://prometheus.io/>Prometheus</a> is an open-source systems monitoring and alerting toolkit.</p><h3 id=installation>Installation</h3><p>In <code>docker-compose.yml</code>:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:navy>services</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:navy>prometheus</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:navy>image</span>:<span style=color:#bbb> </span>prom/prometheus<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:navy>restart</span>:<span style=color:#bbb> </span>always<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:navy>volumes</span>:<span style=color:#bbb>
 </span><span style=color:#bbb>      </span>- ./prometheus.yml:/etc/prometheus/prometheus.yml<span style=color:#bbb>
 </span><span style=color:#bbb>      </span>- ./prometheus:/prometheus<span style=color:#bbb>
-</span><span style=color:#bbb>    </span><span style=color:#000;font-weight:700>ports</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:navy>ports</span>:<span style=color:#bbb>
 </span><span style=color:#bbb>      </span>- <span style=color:#099>9090</span>:<span style=color:#099>9090</span><span style=color:#bbb>
-</span><span style=color:#bbb>    </span><span style=color:#000;font-weight:700>user</span>:<span style=color:#bbb> </span>root<span style=color:#bbb>
-</span></code></pre></td></tr></table></div></div><p>Prometheus provides a UI at <code>:9090</code> by default.</p><h3 id=node-exporter>Node Exporter</h3><p><a href=https://github.com/prometheus/node_exporter><strong>Node Exporter</strong></a> is designed ad a Prometheus exporter for hardware and OS metrics exposed by *NIX kernels.</p><p>According to the documentation, it&rsquo;s not recommended to deploy it as a Docker container because it requires access to the host system, so you could just download the binary release version.</p><div class=highlight><div style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
-</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ wget https://github.com/prometheus/node_exporter/releases/download/v0.18.0/node_exporter-0.18.0.linux-amd64.tar.gz
+</span><span style=color:#bbb>    </span><span style=color:navy>user</span>:<span style=color:#bbb> </span>root<span style=color:#bbb>
+</span></code></pre></div><p>Prometheus provides a UI at <code>:9090</code> by default.</p><h3 id=node-exporter>Node Exporter</h3><p><a href=https://github.com/prometheus/node_exporter><strong>Node Exporter</strong></a> is designed ad a Prometheus exporter for hardware and OS metrics exposed by *NIX kernels.</p><p>According to the documentation, it&rsquo;s not recommended to deploy it as a Docker container because it requires access to the host system, so you could just download the binary release version.</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ wget https://github.com/prometheus/node_exporter/releases/download/v0.18.0/node_exporter-0.18.0.linux-amd64.tar.gz
 $ tar -xvf node_exporter-0.18.0.linux-amd64.tar.gz
 $ <span style=color:#0086b3>cd</span> node_exporter-0.18.0.linux-amd64
 <span style=color:#998;font-style:italic># It&#39;s recommended to run the following instruction in tmux in order to keep it running after exit.</span>
 $ ./node_exporter &amp;
-</code></pre></td></tr></table></div></div><p>After started, <code>node_exporter</code> will be listening at <code>:9100</code>.</p><h3 id=service-registry>Service Registry</h3><p>In order to combine service <code>node-exporter</code> with <strong>Consul</strong>, a config directory should be configured.</p><p>In <code>consul.d/node_exporter.json</code>:</p><div class=highlight><div style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">7
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">8
-</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+</code></pre></div><p>After started, <code>node_exporter</code> will be listening at <code>:9100</code>.</p><h3 id=service-registry>Service Registry</h3><p>In order to combine service <code>node-exporter</code> with <strong>Consul</strong>, a config directory should be configured.</p><p>In <code>consul.d/node_exporter.json</code>:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
   <span style=color:navy>&#34;service&#34;</span>: {
     <span style=color:navy>&#34;name&#34;</span>: <span style=color:#d14>&#34;node_exporter&#34;</span>,
     <span style=color:navy>&#34;tags&#34;</span>: [<span style=color:#d14>&#34;exporter&#34;</span>],
@@ -44,95 +21,50 @@ $ ./node_exporter &amp;
     <span style=color:navy>&#34;port&#34;</span>: <span style=color:#099>9100</span>
   }
 }
-</code></pre></td></tr></table></div></div><p>In <code>docker-compose.yml</code> of Consul:</p><div class=highlight><div style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
-</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#000;font-weight:700>version</span>:<span style=color:#bbb> </span><span style=color:#d14>&#34;3&#34;</span><span style=color:#bbb>
-</span><span style=color:#bbb></span><span style=color:#000;font-weight:700>services</span>:<span style=color:#bbb>
-</span><span style=color:#bbb>  </span><span style=color:#000;font-weight:700>consul</span>:<span style=color:#bbb>
-</span><span style=color:#bbb>    </span><span style=color:#000;font-weight:700>image</span>:<span style=color:#bbb> </span>consul<span style=color:#bbb>
-</span><span style=color:#bbb>    </span><span style=color:#000;font-weight:700>container_name</span>:<span style=color:#bbb> </span>consul<span style=color:#bbb>
-</span><span style=color:#bbb>    </span><span style=color:#000;font-weight:700>ports</span>:<span style=color:#bbb>
+</code></pre></div><p>In <code>docker-compose.yml</code> of Consul:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:navy>version</span>:<span style=color:#bbb> </span><span style=color:#d14>&#34;3&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:navy>services</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:navy>consul</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:navy>image</span>:<span style=color:#bbb> </span>consul<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:navy>container_name</span>:<span style=color:#bbb> </span>consul<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:navy>ports</span>:<span style=color:#bbb>
 </span><span style=color:#bbb>      </span>- <span style=color:#d14>&#34;8300:8300&#34;</span><span style=color:#bbb>
 </span><span style=color:#bbb>      </span>- <span style=color:#d14>&#34;8400:8400&#34;</span><span style=color:#bbb>
 </span><span style=color:#bbb>      </span>- <span style=color:#d14>&#34;8500:8500&#34;</span><span style=color:#bbb>
 </span><span style=color:#bbb>      </span>- <span style=color:#d14>&#34;8600:53/udp&#34;</span><span style=color:#bbb>
-</span><span style=color:#bbb>    </span><span style=color:#000;font-weight:700>volumes</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:navy>volumes</span>:<span style=color:#bbb>
 </span><span style=color:#bbb>      </span>- ./consul.d:/etc/consul.d<span style=color:#bbb>
-</span><span style=color:#bbb>    </span><span style=color:#000;font-weight:700>command</span>:<span style=color:#bbb> </span>agent<span style=color:#bbb> </span>-dev<span style=color:#bbb> </span>-client<span style=color:#bbb> </span><span style=color:#099>0.0.0.0</span><span style=color:#bbb> </span>-config-dir=/etc/consul.d<span style=color:#bbb>
-</span></code></pre></td></tr></table></div></div><h3 id=configuration>Configuration</h3><p>In <code>prometheus.yml</code>:</p><div class=highlight><div style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
-</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#000;font-weight:700>global</span>:<span style=color:#bbb>
-</span><span style=color:#bbb>  </span><span style=color:#000;font-weight:700>scrape_interval</span>:<span style=color:#bbb> </span>15s<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:navy>command</span>:<span style=color:#bbb> </span>agent -dev -client 0.0.0.0 -config-dir=/etc/consul.d<span style=color:#bbb>
+</span></code></pre></div><h3 id=configuration>Configuration</h3><p>In <code>prometheus.yml</code>:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:navy>global</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:navy>scrape_interval</span>:<span style=color:#bbb> </span>15s<span style=color:#bbb>
 </span><span style=color:#bbb>
-</span><span style=color:#bbb></span><span style=color:#000;font-weight:700>scrape_configs</span>:<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:navy>scrape_configs</span>:<span style=color:#bbb>
 </span><span style=color:#bbb>  </span><span style=color:#998;font-style:italic># Self-monitoring</span><span style=color:#bbb>
-</span><span style=color:#bbb>  </span>- <span style=color:#000;font-weight:700>job_name</span>:<span style=color:#bbb> </span><span style=color:#d14>&#39;prometheus&#39;</span><span style=color:#bbb>
-</span><span style=color:#bbb>    </span><span style=color:#000;font-weight:700>static_configs</span>:<span style=color:#bbb>
-</span><span style=color:#bbb>      </span>- <span style=color:#000;font-weight:700>targets</span>:<span style=color:#bbb> </span>[<span style=color:#d14>&#39;localhost:9090&#39;</span>]<span style=color:#bbb>
-</span><span style=color:#bbb>      </span>- <span style=color:#000;font-weight:700>labels</span>:<span style=color:#bbb>
-</span><span style=color:#bbb>          </span><span style=color:#000;font-weight:700>instance</span>:<span style=color:#bbb> </span>prometheus<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:navy>job_name</span>:<span style=color:#bbb> </span><span style=color:#d14>&#39;prometheus&#39;</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:navy>static_configs</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:navy>targets</span>:<span style=color:#bbb> </span>[<span style=color:#d14>&#39;localhost:9090&#39;</span>]<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:navy>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:navy>instance</span>:<span style=color:#bbb> </span>prometheus<span style=color:#bbb>
 </span><span style=color:#bbb>  </span><span style=color:#998;font-style:italic># Without service discovery</span><span style=color:#bbb>
-</span><span style=color:#bbb>  </span>- <span style=color:#000;font-weight:700>job_name</span>:<span style=color:#bbb> </span><span style=color:#d14>&#39;node_exporter&#39;</span><span style=color:#bbb>
-</span><span style=color:#bbb>    </span><span style=color:#000;font-weight:700>static_configs</span>:<span style=color:#bbb>
-</span><span style=color:#bbb>      </span>- <span style=color:#000;font-weight:700>targets</span>:<span style=color:#bbb> </span>[<span style=color:#d14>&#39;$PRIVATE_IP_ADDRESS:9100&#39;</span>]<span style=color:#bbb>
-</span><span style=color:#bbb>      </span>- <span style=color:#000;font-weight:700>labels</span>:<span style=color:#bbb>
-</span><span style=color:#bbb>          </span><span style=color:#000;font-weight:700>instance</span>:<span style=color:#bbb> </span>node_exporter<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:navy>job_name</span>:<span style=color:#bbb> </span><span style=color:#d14>&#39;node_exporter&#39;</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:navy>static_configs</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:navy>targets</span>:<span style=color:#bbb> </span>[<span style=color:#d14>&#39;$PRIVATE_IP_ADDRESS:9100&#39;</span>]<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:navy>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:navy>instance</span>:<span style=color:#bbb> </span>node_exporter<span style=color:#bbb>
 </span><span style=color:#bbb>  </span><span style=color:#998;font-style:italic># With service discovery, discard the job above</span><span style=color:#bbb>
-</span><span style=color:#bbb>  </span>- <span style=color:#000;font-weight:700>job_name</span>:<span style=color:#bbb> </span><span style=color:#d14>&#39;node_exporter&#39;</span><span style=color:#bbb>
-</span><span style=color:#bbb>    </span><span style=color:#000;font-weight:700>consul_sd_configs</span>:<span style=color:#bbb>
-</span><span style=color:#bbb>      </span>- <span style=color:#000;font-weight:700>server</span>:<span style=color:#bbb> </span>$PRIVATE_IP_ADDRESS:<span style=color:#099>8500</span><span style=color:#bbb>
-</span><span style=color:#bbb>        </span><span style=color:#000;font-weight:700>services</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:navy>job_name</span>:<span style=color:#bbb> </span><span style=color:#d14>&#39;node_exporter&#39;</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:navy>consul_sd_configs</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:navy>server</span>:<span style=color:#bbb> </span>$PRIVATE_IP_ADDRESS:8500<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:navy>services</span>:<span style=color:#bbb>
 </span><span style=color:#bbb>          </span>- node_exporter<span style=color:#bbb>
-</span></code></pre></td></tr></table></div></div><h2 id=grafana>Grafana</h2><p><a href=https://grafana.com/>Grafana</a> allows users to query, visualize, alert on and understand your metrics no matter where they are stored, supports multiple data sources and provides very powerful dashboard for displaying multiple metrics.</p><h3 id=installation-1>Installation</h3><p>In <code>docker-compose.yml</code>:</p><div class=highlight><div style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
-</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
-</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#000;font-weight:700>services</span>:<span style=color:#bbb>
-</span><span style=color:#bbb>  </span><span style=color:#000;font-weight:700>grafana</span>:<span style=color:#bbb>
-</span><span style=color:#bbb>    </span><span style=color:#000;font-weight:700>image</span>:<span style=color:#bbb> </span>grafana/grafana<span style=color:#bbb>
-</span><span style=color:#bbb>    </span><span style=color:#000;font-weight:700>restart</span>:<span style=color:#bbb> </span>always<span style=color:#bbb>
-</span><span style=color:#bbb>    </span><span style=color:#000;font-weight:700>ports</span>:<span style=color:#bbb>
+</span></code></pre></div><h2 id=grafana>Grafana</h2><p><a href=https://grafana.com/>Grafana</a> allows users to query, visualize, alert on and understand your metrics no matter where they are stored, supports multiple data sources and provides very powerful dashboard for displaying multiple metrics.</p><h3 id=installation-1>Installation</h3><p>In <code>docker-compose.yml</code>:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:navy>services</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:navy>grafana</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:navy>image</span>:<span style=color:#bbb> </span>grafana/grafana<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:navy>restart</span>:<span style=color:#bbb> </span>always<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:navy>ports</span>:<span style=color:#bbb>
 </span><span style=color:#bbb>      </span>- <span style=color:#099>3000</span>:<span style=color:#099>3000</span><span style=color:#bbb>
-</span><span style=color:#bbb>    </span><span style=color:#000;font-weight:700>volumes</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:navy>volumes</span>:<span style=color:#bbb>
 </span><span style=color:#bbb>      </span>- grafana:/var/lib/grafana<span style=color:#bbb>
-</span><span style=color:#bbb></span><span style=color:#000;font-weight:700>volumes</span>:<span style=color:#bbb>
-</span><span style=color:#bbb>  </span><span style=color:#000;font-weight:700>grafana</span>:<span style=color:#bbb>
-</span></code></pre></td></tr></table></div></div><p>Grafana provides a UI at <code>:3000</code> by default.</p><p>You could follow the instructions in Grafana to add data sources including Prometheus and import dashboards.</p><p><a href=https://grafana.com/dashboards/159>This dashboard</a> could show system status according to the data collected by Prometheus.</p><h2 id=references>References</h2><ul><li><a href=https://prometheus.io/docs/introduction/overview/>https://prometheus.io/docs/introduction/overview/</a></li><li><a href=https://grafana.com/docs/>https://grafana.com/docs/</a></li><li><a href=https://yunlzheng.gitbook.io/prometheus-book/part-ii-prometheus-jin-jie/sd/service-discovery-with-consul>https://yunlzheng.gitbook.io/prometheus-book/part-ii-prometheus-jin-jie/sd/service-discovery-with-consul</a></li></ul></article></div><div id=disqus_thread></div><script type=text/javascript>(function(){if(window.location.hostname=="localhost")
+</span><span style=color:#bbb></span><span style=color:navy>volumes</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:navy>grafana</span>:<span style=color:#bbb>
+</span></code></pre></div><p>Grafana provides a UI at <code>:3000</code> by default.</p><p>You could follow the instructions in Grafana to add data sources including Prometheus and import dashboards.</p><p><a href=https://grafana.com/dashboards/159>This dashboard</a> could show system status according to the data collected by Prometheus.</p><h2 id=references>References</h2><ul><li><a href=https://prometheus.io/docs/introduction/overview/>https://prometheus.io/docs/introduction/overview/</a></li><li><a href=https://grafana.com/docs/>https://grafana.com/docs/</a></li><li><a href=https://yunlzheng.gitbook.io/prometheus-book/part-ii-prometheus-jin-jie/sd/service-discovery-with-consul>https://yunlzheng.gitbook.io/prometheus-book/part-ii-prometheus-jin-jie/sd/service-discovery-with-consul</a></li></ul></article></div><div id=disqus_thread></div><script type=text/javascript>(function(){if(window.location.hostname=="localhost")
 return;var dsq=document.createElement('script');dsq.type='text/javascript';dsq.async=true;var disqus_shortname='rudeigerc';dsq.src='//'+disqus_shortname+'.disqus.com/embed.js';(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(dsq);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com/ class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></section></div><footer><div><p class=footer>© 2020 Yuchen Cheng. This site is licensed under a Creative Commons Attribution 4.0 International license.<br>Theme <a href=https://github.com/rudeigerc/yggdrasill>Yggdrasill</a> | Powered by <a href=https://gohugo.io>Hugo</a></p></div></footer><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-110870583-1','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></body></html>
